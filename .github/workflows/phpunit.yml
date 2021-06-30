@@ -1,0 +1,51 @@
+name: phpunit
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions:
+        - '7.0'
+        - '7.1'
+        - '7.2.'
+        - '7.3'
+        - '7.4'
+        - '8.0' 
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+
+    - name: Get composer cache directory
+      id: composer-cache-directory
+      run: |
+        composer config cache-dir
+        echo "::set-output name=dir::$(composer config cache-dir)"
+    - name: composer cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache-directory.outputs.dir }}
+        key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          php-${{ matrix.php-versions }}-composer
+
+    - name: Compose setup
+      run: |
+        composer validate
+        composer check-platform-reqs
+        composer install --no-interaction
+
+    - name: Test the code
+      run: |
+        composer exec phpunit
