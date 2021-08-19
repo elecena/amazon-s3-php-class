@@ -18,6 +18,10 @@
         "classmap": ["S3.php"]
     },
     "require-dev": {
-        "phpunit/phpunit": "9.x"
+        "phpunit/phpunit": "9.x",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "scripts": {
+        "test": "phpunit -vvv"
     }
 }
