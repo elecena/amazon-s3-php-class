@@ -66,4 +66,4 @@ jobs:
 
     - name: Test the code
       run: |
-        composer exec phpunit || true
+        composer run test
