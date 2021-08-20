@@ -8,6 +8,7 @@ class S3Test extends S3BaseTest {
     const TEST_STRING_CONTENT = "<strong>Hi</strong> I'm a test content";
     const TEST_STRING_MIME_TYPE = "text/html; charset=utf-8";
     const TEST_X_FOO_HEADER = "header value";
+    const TEST_CACHE_CONTROL = 'public,max-age=31536000';
 
     public function setUp(): void {
         S3BaseTest::setUp();
@@ -60,7 +61,7 @@ class S3Test extends S3BaseTest {
     public function testPutObject(string $acl = S3::ACL_PUBLIC_READ ) {
         $uri = uniqid('s3') . '.html';
 
-        $res = S3::putObjectString(
+        $res = S3::putObject(
             self::TEST_STRING_CONTENT,
             $this->s3Bucket,
             $uri,
@@ -69,7 +70,10 @@ class S3Test extends S3BaseTest {
                 // this will be returned as x-amz-meta-x-foo
                 'X-Foo' => self::TEST_X_FOO_HEADER,
             ],
-            self::TEST_STRING_MIME_TYPE
+            [
+                'Content-Type' => self::TEST_STRING_MIME_TYPE,
+                'Cache-Control' => self::TEST_CACHE_CONTROL
+            ]
         );
 
         $this->assertTrue($res, 'putObjectString() was successful');
@@ -90,9 +94,12 @@ class S3Test extends S3BaseTest {
 
             $this->assertEquals(200, $resp->getStatusCode());
 
+            // check the body
             $this->assertEquals(strlen(self::TEST_STRING_CONTENT), $resp->getBody()->getSize());
             $this->assertEquals(self::TEST_STRING_CONTENT, $resp->getBody()->getContents());
 
+            // check the headers
+            $this->assertEquals(self::TEST_CACHE_CONTROL, $resp->getHeader('cache-control')[0]);
             $this->assertEquals(self::TEST_STRING_MIME_TYPE, $resp->getHeader('content-type')[0]);
             $this->assertEquals(self::TEST_X_FOO_HEADER, $resp->getHeader('x-amz-meta-x-foo')[0]);
         }
