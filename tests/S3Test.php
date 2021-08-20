@@ -1,5 +1,8 @@
 <?php
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+
 class S3Test extends S3BaseTest {
 
     const TEST_STRING_CONTENT = "<strong>Hi</strong> I'm a test content";
@@ -51,7 +54,8 @@ class S3Test extends S3BaseTest {
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
+     * @dataProvider putObjectProvider
      */
     public function testPutObject(string $acl = S3::ACL_PUBLIC_READ ) {
         $uri = uniqid('s3') . '.html';
@@ -77,6 +81,9 @@ class S3Test extends S3BaseTest {
         $this->assertEquals(self::TEST_X_FOO_HEADER, $obj['x-amz-meta-x-foo']);
         $this->assertEquals(self::TEST_STRING_MIME_TYPE, $obj['type']);
 
+        $files = array_keys(S3::getBucket($this->s3Bucket));
+        $this->assertContains( $uri, $files, 'The uploaded file is in the bucket' );
+
         // check the public access
         if ($acl === S3::ACL_PUBLIC_READ) {
             $resp = $this->getGuzzleClient()->get($uri);
@@ -89,10 +96,26 @@ class S3Test extends S3BaseTest {
             $this->assertEquals(self::TEST_STRING_MIME_TYPE, $resp->getHeader('content-type')[0]);
             $this->assertEquals(self::TEST_X_FOO_HEADER, $resp->getHeader('x-amz-meta-x-foo')[0]);
         }
+        elseif ( $acl == S3::ACL_PRIVATE ) {
+            try {
+                $this->getGuzzleClient()->get($uri);
+            }
+            catch (ClientException $ex) {
+                $this->assertEquals(403, $ex->getResponse()->getStatusCode());
+            }
+        }
 
         // remove it
         $res = S3::deleteObject($this->s3Bucket, $uri);
         $this->assertTrue($res, 'deleteObject() was successful');
+
+        $files = array_keys(S3::getBucket($this->s3Bucket));
+        $this->assertNotContains( $uri, $files, 'The uploaded file has been removed the bucket' );
+    }
+
+    public function putObjectProvider(): Generator {
+        yield 'public ACL' => [ S3::ACL_PUBLIC_READ ];
+        yield 'private ACL' => [ S3::ACL_PRIVATE ];
     }
 
 }
