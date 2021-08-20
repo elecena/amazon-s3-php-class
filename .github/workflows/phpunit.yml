@@ -25,7 +25,7 @@ jobs:
     - name: Set up the s3 bucket for testing
       env:
         S3_BUCKET: test.macbre.net
-        S3_ENDPOINT: test.macbre.net.s3-eu-west-1.amazonaws.com
+        S3_ENDPOINT: s3-eu-west-1.amazonaws.com/test.macbre.net
 
       run: |
         shopt -s expand_aliases # https://github.community/t/create-and-use-an-alias-inside-github-action/147616/3
@@ -69,7 +69,7 @@ jobs:
         S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
         S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
         S3_BUCKET: test.macbre.net
-        S3_ENDPOINT: test.macbre.net.s3-eu-west-1.amazonaws.com
+        S3_ENDPOINT: s3-eu-west-1.amazonaws.com/test.macbre.net
 
       run: |
         composer run test
