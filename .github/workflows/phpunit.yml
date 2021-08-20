@@ -10,17 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php-versions:
-        - '5.2'
-        - '5.4'
         - '7.0'
         - '7.1'
         - '7.2'
+        - '7.3'
         - '7.4'
         - '8.0'
 
     steps:
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+
     - name: Install s3cmd
       run: |
         sudo apt-get install s3cmd
@@ -44,10 +49,6 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
 
     - name: Get composer cache directory
       id: composer-cache-directory
