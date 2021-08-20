@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=7.3",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-simplexml": "*"
     },
     "autoload": {
         "classmap": ["S3.php", "tests/S3BaseTest.php"]

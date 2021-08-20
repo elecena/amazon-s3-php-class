@@ -5,9 +5,6 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class S3GuzzleTest extends S3BaseTest {
 
-    const PUBLIC_OBJECT = 'README';
-    const PRIVATE_OBJECT = '.private';
-
     /**
      * @throws GuzzleException
      */
