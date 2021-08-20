@@ -35,6 +35,16 @@ class S3BaseTest extends TestCase {
         ]);
     }
 
+    protected function setUpS3Client( bool $useSSL = true ) {
+        S3::setAuth($this->s3AccessKey, $this->s3SecretKey);
+        S3::setSSL($useSSL);
+
+        // provide the region as it's needed when using https
+        S3::$endpoint = sprintf('s3-%s.amazonaws.com', $this->s3Region);
+
+        S3::$region = $this->s3Region;
+    }
+
     public function testClassIsPresentInAutoloader() {
         $this->assertTrue( class_exists( S3::class ) );
     }
