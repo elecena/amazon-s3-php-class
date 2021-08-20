@@ -59,7 +59,7 @@ class S3Test extends S3BaseTest {
      * @dataProvider putObjectProvider
      */
     public function testPutObject(string $acl = S3::ACL_PUBLIC_READ ) {
-        $uri = uniqid('s3') . '.html';
+        $uri = uniqid('s3-test-') . '.html';
 
         $res = S3::putObject(
             self::TEST_STRING_CONTENT,
