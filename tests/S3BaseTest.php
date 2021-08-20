@@ -30,6 +30,7 @@ abstract class S3BaseTest extends TestCase {
 
     protected function getGuzzleClient(): Client {
         return new Client([
+            // e.g. https://s3-eu-west-1.amazonaws.com/s.elecena.pl/3/0/2/302ce20dd5246383abf85a5a017d6b9a.jpg
             'base_uri' => sprintf('https://s3-%s.amazonaws.com/%s/', $this->s3Region, $this->s3Bucket),
         ]);
     }

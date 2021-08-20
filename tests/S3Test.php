@@ -5,9 +5,13 @@ class S3Test extends S3BaseTest {
     public function setUp(): void {
         parent::setUp();
 
+        // TODO: use a new, virtual-hosted style references
+        // e.g. https://jbarr-public.s3.amazonaws.com/images/ritchie_and_thompson_pdp11.jpeg
+        S3::$endpoint = sprintf( 's3-%s.amazonaws.com', $this->s3Region );
+
         S3::setAuth( $this->s3AccessKey, $this->s3SecretKey );
         S3::$region = $this->s3Region;
-//        S3::setSSL(true); // TODO: add HTTPS support
+        S3::setSSL(true);
     }
 
     public function testClassIsPresentInAutoloader() {
