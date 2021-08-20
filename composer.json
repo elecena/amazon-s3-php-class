@@ -23,6 +23,6 @@
         "guzzlehttp/guzzle": "^7.3"
     },
     "scripts": {
-        "test": "phpunit -vvv"
+        "test": "phpunit -vvv --testdox"
     }
 }
