@@ -7,6 +7,7 @@ class S3Test extends S3BaseTest {
 
         S3::setAuth( $this->s3AccessKey, $this->s3SecretKey );
         S3::$region = $this->s3Region;
+//        S3::setSSL(true); // TODO: add HTTPS support
     }
 
     public function testClassIsPresentInAutoloader() {
