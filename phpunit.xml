@@ -6,7 +6,7 @@
          convertWarningsToExceptions="true">
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">./</directory>
+            <file>S3.php</file>
         </include>
     </coverage>
     <testsuites>
