@@ -1,5 +1,6 @@
 # Amazon S3 PHP Class
 [![phpunit](https://github.com/elecena/amazon-s3-php-class/actions/workflows/phpunit.yml/badge.svg)](https://github.com/elecena/amazon-s3-php-class/actions/workflows/phpunit.yml)
+[![Coverage Status](https://coveralls.io/repos/github/elecena/amazon-s3-php-class/badge.svg?branch=master)](https://coveralls.io/github/elecena/amazon-s3-php-class?branch=master)
 
 ## Usage
 
