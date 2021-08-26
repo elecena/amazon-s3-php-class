@@ -72,4 +72,12 @@ jobs:
         S3_REGION: eu-west-1
 
       run: |
-        composer run test
+        composer run coverage
+
+    - name: Upload coverage results to Coveralls
+      if: matrix.php-versions == '8.0'
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        composer global require php-coveralls/php-coveralls
+        php-coveralls --coverage_clover=.coverage.xml --json_path=/tmp/coverage.json -v
