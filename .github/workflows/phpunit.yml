@@ -11,11 +11,14 @@ jobs:
 
     strategy:
       matrix:
+        # https://github.com/marketplace/actions/setup-php-action#tada-php-support
         php-versions:
         - '7.3'
         - '7.4'
         - '8.0'
-        
+        - '8.1'
+        - '8.2' # dev
+
     steps:
     - name: Install s3cmd
       run: |
@@ -62,7 +65,8 @@ jobs:
       run: |
         composer validate
         composer check-platform-reqs
-        composer install --no-interaction
+        # if a package requires php: ^7, then the option --ignore-platform-req=php+ would allow installing on PHP8
+        composer install --no-interaction --ignore-platform-req=php+
 
     - name: Archive the project
       run: |
