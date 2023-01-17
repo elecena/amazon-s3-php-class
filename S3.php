@@ -2007,11 +2007,11 @@ class S3
 			$combinedHeaders[strtolower($k)] = trim($v);
 		foreach ($amzHeaders as $k => $v) 
 			$combinedHeaders[strtolower($k)] = trim($v);
-		uksort($combinedHeaders, array('self', '__sortMetaHeadersCmp'));
+		uksort($combinedHeaders, array('S3', '__sortMetaHeadersCmp'));
 
 		// Convert null query string parameters to strings and sort
 		$parameters = array_map('strval', $parameters); 
-		uksort($parameters, array('self', '__sortMetaHeadersCmp'));
+		uksort($parameters, array('S3', '__sortMetaHeadersCmp'));
 		$queryString = http_build_query($parameters, '' /* $numeric_prefix */, '&', PHP_QUERY_RFC3986);
 
 		// Payload
