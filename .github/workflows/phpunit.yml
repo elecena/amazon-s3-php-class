@@ -93,7 +93,7 @@ jobs:
       run: |
         set -x
         composer --version
-        composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
+        composer require --dev --ignore-platform-reqs --update-with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
 
     - name: Install Composer dependencies
       if: ${{ ! matrix.phpunit }}
