@@ -78,18 +78,22 @@ jobs:
         restore-keys: |
           php-${{ matrix.php-versions }}-composer
 
+    - name: Composer validation
+      if: matrix.php-versions == '8.0'
+      run: |
+        composer validate
+        composer check-platform-reqs
+
     - name: Install a specific PHPUnit version
       if: ${{ matrix.phpunit }}
       run: |
         set -x
         composer --version
-        composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:${{ matrix.phpunit }}
+        composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
 
-    - name: Compose setup
-      if: ${{ matrix.phpunit }} == null
+    - name: Install Composer dependencies
+      if: ${{ ! matrix.phpunit }}
       run: |
-        composer validate
-        composer check-platform-reqs
         # if a package requires php: ^7, then the option --ignore-platform-req=php+ would allow installing on PHP8
         composer install --no-interaction --ignore-platform-req=php+
 
