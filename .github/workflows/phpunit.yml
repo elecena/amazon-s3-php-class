@@ -92,7 +92,6 @@ jobs:
       if: ${{ matrix.phpunit }}
       run: |
         set -x
-        rm composer*
         composer --version
         composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
 
@@ -104,7 +103,7 @@ jobs:
 
     - name: Test the code
       if: matrix.php-version != '8.0'
-      run: composer exec phpunit -- -vvv --testdox
+      run: composer run test
 
     #
     # PHP 8.0.x specific tasks follow
