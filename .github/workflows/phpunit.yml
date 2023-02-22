@@ -92,6 +92,7 @@ jobs:
       if: ${{ matrix.phpunit }}
       run: |
         set -x
+        rm composer*
         composer --version
         composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
 
