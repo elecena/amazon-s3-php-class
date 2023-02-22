@@ -22,6 +22,7 @@ jobs:
           - php-version: "7.3"
           - php-version: "7.4"
           - php-version: "8.0"
+            coverage: "xdebug"
           - php-version: "8.1"
           - php-version: "8.2"
           # TODO: for older PHP versions we want to explicitly state the PHPUnit version to be used
@@ -65,10 +66,13 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
+
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
+        # https://github.com/shivammathur/setup-php#signal_strength-coverage-support
+        coverage: ${{ matrix.coverage }}  # enable xdebug only for PHP 8.0 -> code coverage is run for that version
 
     - name: Get composer cache directory
       id: composer-cache-directory
