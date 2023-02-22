@@ -37,6 +37,7 @@ jobs:
             phpunit: "5"
           - php-version: "7.0"
             phpunit: "5"
+            coverage: "none"  # do not install xdebug as phpunit fails with the exit code 2
           - php-version: "7.1"
             phpunit: "5"
           - php-version: "7.2"
