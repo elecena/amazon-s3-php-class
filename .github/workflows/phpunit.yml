@@ -93,7 +93,11 @@ jobs:
       run: |
         set -x
         composer --version
-        composer require --dev --ignore-platform-reqs --update-with-all-dependencies phpunit/phpunit:^${{ matrix.phpunit }}
+
+        # https://packagist.org/packages/guzzlehttp/guzzle#v3.8.1
+        composer require --dev --ignore-platform-reqs --update-with-all-dependencies \
+          phpunit/phpunit:^${{ matrix.phpunit }} \
+          guzzlehttp/guzzle:v3.8.1
 
     - name: Install Composer dependencies
       if: ${{ ! matrix.phpunit }}
