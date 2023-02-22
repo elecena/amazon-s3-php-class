@@ -20,10 +20,21 @@ jobs:
           - php-version: "8.1"
           - php-version: "8.2"
           # TODO: for older PHP versions we want to explicitly state the PHPUnit version to be used
+          # https://phpunit.de/supported-versions.html
           - php-version: "5.3"
+            phpunit: "4"
           - php-version: "5.4"
+            phpunit: "4"
           - php-version: "5.5"
+            phpunit: "4"
           - php-version: "5.6"
+            phpunit: "5"
+          - php-version: "7.0"
+            phpunit: "5"
+          - php-version: "7.1"
+            phpunit: "5"
+          - php-version: "7.2"
+            phpunit: "8"
 
     steps:
     - name: Install s3cmd
@@ -67,7 +78,14 @@ jobs:
         restore-keys: |
           php-${{ matrix.php-versions }}-composer
 
+    - name: Install a specific PHPUnit version
+      if: ${{ matrix.phpunit }}
+      run: |
+        set -x
+        composer require --ignore-platform-req phpunit/phpunit^${{ matrix.phpunit }}
+
     - name: Compose setup
+      if: ${{ matrix.phpunit }} == null
       run: |
         composer validate
         composer check-platform-reqs
@@ -75,6 +93,7 @@ jobs:
         composer install --no-interaction --ignore-platform-req=php+
 
     - name: Archive the project
+      if: matrix.php-versions == '8.0'
       run: |
         set -x
         composer archive --file archive
