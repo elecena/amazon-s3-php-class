@@ -10,14 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        # https://github.com/marketplace/actions/setup-php-action#tada-php-support
-        php-versions:
-        - '7.3'
-        - '7.4'
-        - '8.0'
-        - '8.1'
-        - '8.2'
+        include:
+          # https://github.com/marketplace/actions/setup-php-action#tada-php-support
+          - php-version: "7.3"
+          - php-version: "7.4"
+          - php-version: "8.0"
+          - php-version: "8.1"
+          - php-version: "8.2"
+          # TODO: for older PHP versions we want to explicitly state the PHPUnit version to be used
+          - php-version: "5.3"
+          - php-version: "5.4"
+          - php-version: "5.5"
+          - php-version: "5.6"
 
     steps:
     - name: Install s3cmd
@@ -46,7 +52,7 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: ${{ matrix.php-version }}
 
     - name: Get composer cache directory
       id: composer-cache-directory
