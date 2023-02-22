@@ -83,12 +83,6 @@ jobs:
         restore-keys: |
           php-${{ matrix.php-versions }}-composer
 
-    - name: Composer validation
-      if: matrix.php-versions == '8.0'
-      run: |
-        composer validate
-        composer check-platform-reqs
-
     - name: Install a specific PHPUnit version
       if: ${{ matrix.phpunit }}
       run: |
@@ -102,19 +96,28 @@ jobs:
         # if a package requires php: ^7, then the option --ignore-platform-req=php+ would allow installing on PHP8
         composer install --no-interaction --ignore-platform-req=php+
 
+    - name: Test the code
+      if: matrix.php-version != '8.0'
+      run: composer run test
+
+    #
+    # PHP 8.0.x specific tasks follow
+    #
     - name: Archive the project
-      if: matrix.php-versions == '8.0'
+      if: matrix.php-version == '8.0'
       run: |
         set -x
         composer archive --file archive
         tar -tvf archive.tar
 
-    - name: Test the code
-      if: matrix.php-versions != '8.0'
-      run: composer run test
+    - name: Composer validation
+      if: matrix.php-version == '8.0'
+      run: |
+        composer validate
+        composer check-platform-reqs
 
     - name: Report the code coverage and upload it to Coveralls
-      if: matrix.php-versions == '8.0'
+      if: matrix.php-version == '8.0'
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
