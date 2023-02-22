@@ -82,7 +82,8 @@ jobs:
       if: ${{ matrix.phpunit }}
       run: |
         set -x
-        composer require --ignore-platform-reqs phpunit/phpunit:${{ matrix.phpunit }}
+        composer --version
+        composer require --dev --ignore-platform-reqs --with-all-dependencies phpunit/phpunit:${{ matrix.phpunit }}
 
     - name: Compose setup
       if: ${{ matrix.phpunit }} == null
