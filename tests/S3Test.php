@@ -25,10 +25,10 @@ class S3Test extends S3BaseTest {
 
     /**
      * @param string $uri
-     * @param ?int $expectedSize
+     * @param int|null $expectedSize
      * @dataProvider getObjectInfoProvider
      */
-    public function testGetObjectInfo( string $uri, ?int $expectedSize ) {
+    public function testGetObjectInfo( string $uri, $expectedSize ) {
         $obj = S3::getObjectInfo( $this->s3Bucket, $uri );
 
         if ($expectedSize === null) {
