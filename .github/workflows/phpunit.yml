@@ -54,7 +54,7 @@ jobs:
         composer config cache-dir
         echo "::set-output name=dir::$(composer config cache-dir)"
     - name: composer cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.composer-cache-directory.outputs.dir }}
         key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
